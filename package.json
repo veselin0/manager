@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-native-picker/picker": "^1.9.8",
     "firebase": "^8.2.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
