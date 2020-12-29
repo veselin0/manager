@@ -1,22 +1,22 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, View, Text } from 'react-native';
+import ListView from 'deprecated-react-native-listview';
 import { employeesFetch } from '../actions';
+import ListItem from './ListItem';
 
 class EmployeeList extends Component {
+  state = {};
+
   componentDidMount() {
     this.props.employeesFetch();
-
     this.createDataSource(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    // nextProps are the next set of props that this component
-    // will be rendered with
-    // this.props is still the old set of props
-
-    this.createDataSource(nextProps);
+  componentDidUpdate(prevProps) {
+    if (prevProps.employees != this.props.employees) {
+      this.createDataSource(this.props);
+    }
   }
 
   createDataSource({ employees }) {
@@ -24,21 +24,25 @@ class EmployeeList extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2,
     });
 
-    this.dataSource = ds.cloneWithRows(employees);
+    const dataSource = ds.cloneWithRows(employees);
+    this.setState({ dataSource });
+  }
+
+  renderRow(employee) {
+    return <ListItem employee={employee} />;
   }
 
   render() {
-    console.log(this.props);
+    if (!this.state.dataSource) {
+      return null;
+    }
 
     return (
-      <View>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-        <Text>Employee List</Text>
-      </View>
+      <ListView
+        enableEmptySections
+        dataSource={this.state.dataSource}
+        renderRow={this.renderRow}
+      />
     );
   }
 }

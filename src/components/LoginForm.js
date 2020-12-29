@@ -42,6 +42,8 @@ class LoginForm extends Component {
       <Card>
         <CardSection>
           <Input
+            keyboardType="email-address"
+            autoCompleteType="email"
             label="Email"
             placeholder="email@email.com"
             onChangeText={this.onEmailChange.bind(this)}
